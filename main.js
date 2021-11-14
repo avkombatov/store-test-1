@@ -1,4 +1,4 @@
-const API = 'https://raw.githubusercontent.com/avkombatov/store-test-1/test-2';
+const API = 'https://raw.githubusercontent.com/avkombatov/store-test-1/test-3';
 
 class ProductList {
     constructor(container = '.product__box') {

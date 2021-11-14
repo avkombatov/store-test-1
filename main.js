@@ -1,19 +1,15 @@
-const API = 'https://raw.githubusercontent.com/avkombatov/store-test-1/master';
+const API = 'https://raw.githubusercontent.com/avkombatov/store-test-1/test-2';
 
 class ProductList {
     constructor(container = '.product__box') {
         this.container = container;
         this._goods = []; // полученные данные с сервера
         this._allProducts = []; // готовые объекты товаров
-
-        // this._fetchGoods();
         this.getProducts().then((data) => {
             this._goods = [...data];
             this._render();
+            console.log(this.sum());
         });
-
-        console.log(this.sum());
-        // console.log(this);
     }
 
     getProducts() {

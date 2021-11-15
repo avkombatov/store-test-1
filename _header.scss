@@ -140,6 +140,10 @@
         top: 35px;
         left: -20px;
         z-index: 1;
+        &_img{
+            width: 72px;
+            height: 85px;
+        }
 
 
         &::after {

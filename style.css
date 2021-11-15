@@ -220,6 +220,11 @@ a {
   z-index: 1;
 }
 
+.drop__cart_img {
+  width: 72px;
+  height: 85px;
+}
+
 .drop__cart::after {
   content: '';
   width: 12px;

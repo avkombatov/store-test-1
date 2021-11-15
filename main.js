@@ -8,7 +8,7 @@ class List {
         this.goods = [];
         this.allProducts = [];
         this.filtred = []; //отфильтрованные товары
-        this._init();
+        // this._init();
     }
 
     getJson(url) {
@@ -54,7 +54,7 @@ class Item {
     }
 }
 
-class Produtslist extends List {
+class ProductsList extends List {
     constructor(cart, container = '.product__box', url = '/catalog.json') {
         super(url, container);
         this.cart = cart;
@@ -90,74 +90,116 @@ Cart</a>
     }
 }
 
-class Cart extends List{
-    constructor(container = ".drop__cart", url = "/getBasket.json"){
-      super(url, container);
-      this.getJson()
-        .then(data => {
-          this.handleData(data.contents);
-        });
+class Cart extends List {
+    constructor(container = ".drop__cart", url = "/getBasket.json") {
+        super(url, container);
+        this.getJson()
+            .then(data => {
+                this.handleData(data.contents);
+            });
     }
 
-    addProduct(element){
+    addProduct(element) {
         this.getJson(`${API}/addToBasket.json`)
-          .then(data => {
-            if(data.result === 1){
-              let productId = +element.dataset['id'];
-              let find = this.allProducts.find(product => product.id === productId);
-              if(find){
-                find.quantity++;
-                this._updateCart(find);
-              } else {
-                let product = {
-                  id: productId,
-                  img: element.dataset['img'],
-                  price: +element.dataset['price'],
-                  name: element.dataset['name'],
-                  quantity: 1
-                };
-                // goods - это своего рода "опорный" массив, отражающий список товаров, которые нужно отрендерить.
-                // При добавлении нового товара, нас интересует только он один.
-                this.goods = [product];
-                // далее вызывая метод render, мы добавим в allProducts только его, тем самым избегая лишнего перерендера.
-                this.render();
-              }
-            } else {
-              alert('Error');
-            }
-          })
-      }
+            .then(data => {
+                if (data.result === 1) {
+                    let productId = +element.dataset['id'];
+                    let find = this.allProducts.find(product => product.id === productId);
+                    if (find) {
+                        find.quantity++;
+                        this._updateCart(find);
+                    } else {
+                        let product = {
+                            id: productId,
+                            img: element.dataset['img'],
+                            price: +element.dataset['price'],
+                            name: element.dataset['name'],
+                            quantity: 1
+                        };
+                        // goods - это своего рода "опорный" массив, отражающий список товаров, которые нужно отрендерить.
+                        // При добавлении нового товара, нас интересует только он один.
+                        this.goods = [product];
+                        // далее вызывая метод render, мы добавим в allProducts только его, тем самым избегая лишнего перерендера.
+                        this.render();
+                    }
+                } else {
+                    alert('Error');
+                }
+            })
+    }
 
-      removeProduct(element){
+    removeProduct(element) {
         this.getJson(`${API}/deleteFromBasket.json`)
-          .then(data => {
-            if(data.result === 1){
-              let productId = +element.dataset['id'];
-              let find = this.allProducts.find(product => product.id_product === productId);
-              if(find.quantity > 1){ // если товара > 1, то уменьшаем количество на 1
-                find.quantity--;
-                this._updateCart(find);
-              } else { // удаляем
-                this.allProducts.splice(this.allProducts.indexOf(find), 1);
-                document.querySelector(`.cart-item[data-id="${productId}"]`).remove();
-              }
-            } else {
-              alert('Error');
-            }
-          })
-      }
+            .then(data => {
+                if (data.result === 1) {
+                    let productId = +element.dataset['id'];
+                    let find = this.allProducts.find(product => product.id === productId);
+                    if (find.quantity > 1) { // если товара > 1, то уменьшаем количество на 1
+                        find.quantity--;
+                        this._updateCart(find);
+                    } else { // удаляем
+                        this.allProducts.splice(this.allProducts.indexOf(find), 1);
+                        document.querySelector(`.drop__cart_product[data-id="${productId}"]`).remove();
+                    }
+                } else {
+                    alert('Error');
+                }
+            })
+    }
 
+    _updateCart(product) {
+        let block = document.querySelector(`.drop__cart_product[data-id="${product.id}"]`);
+        block.querySelector('.product-quantity').textContent = `Количество: ${product.quantity}`;
+        block.querySelector('.product-price').textContent = `${product.quantity * product.price} ₽`;
+    }
+
+}
+
+class CartItem extends Item {
+    constructor(el) {
+        super(el);
+        this.quantity = el.quantity;
+    }
+    render() {
+        //   return `<div class="cart-item" data-id="${this.id}">
+        //           <div class="product-bio">
+        //           <img src="${this.img}" alt="Some image">
+        //           <div class="product-desc">
+        //           <p class="product-title">${this.name}</p>
+        //           <p class="product-quantity">Количество: ${this.quantity}</p>
+        //       <p class="product-single-price">${this.price} за ед.</p>
+        //       </div>
+        //       </div>
+        //       <div class="right-block">
+        //           <p class="product-price">${this.quantity*this.price} ₽</p>
+        //           <button class="del-btn" data-id="${this.id_product}">&times;</button>
+        //       </div>
+        //       </div>`
+
+        return `<div class="drop__cart_product data-id="${this.id}">
+    <a href="#" class="drop__cart_a"><img class="drop__cart_img"
+            src="${this.img}" alt="foto"></a>
+    <div class="drop__cart_descr">
+        <a href="" class="drop__cart_h3">
+            <h3 class="drop_cart_h3">${this.name}</h3>
+        </a>
+      
+        <p class="drop__cart_p">${this.quantity}×${this.price}</p>
+    </div>
+    <i class="fas fa-times-circle drop__delete"></i>
+</div>`
+    }
 }
 
 
 
 const listContext = {
-    ProductList: ProductItem,
+    ProductsList: ProductItem,
     Cart: CartItem
 };
 
 let cart = new Cart();
-let products = new ProductList(cart);
+let products = new ProductsList(cart);
 
 
 

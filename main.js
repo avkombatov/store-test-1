@@ -11,20 +11,104 @@ class List {
         this._init();
     }
 
-    getJson(url){
+    getJson(url) {
         return fetch(url ? url : `${API + this.url}`)
-        .then(result => result.json())
-        .catch(error =>{
-            console.log(error);
-        })
+            .then(result => result.json())
+            .catch(error => {
+                console.log(error);
+            })
+    }
+
+    handleData(data) {
+        this.goods = [...data];
+        this.render();
+    }
+
+    calcSum() {
+        return this.allProducts.reduce((accum, item) => accum = accum + item.price, 0);
+    }
+    render() {
+        const block = document.querySelector(this.container);
+        for (let product of this.goods) {
+            console.log(this.constructor.name);
+            const productObj = new this.list[this.constructor.name](product);
+            console.log(productObj);
+            this.allProducts.push(productObj);
+            block.insertAdjacentHTML('beforeend', productObj.render());
+        }
+
     }
 
 }
 
+class Item {
+    constructor(el) {
+        this.id = el.id;
+        this.img = el.img;
+        this.price = el.price;
+        this.name = el.name;
+
+    }
+    render() {
+        return '';
+    }
+}
+
+class Produtslist extends List {
+    constructor(cart, container = '.product__box', url = '/catalog.json') {
+        super(url, container);
+        this.cart = cart;
+        this.getJson()
+            .then(data => this.handleData(data));
+    }
+    _init() {
+        document.querySelector(this.container).addEventListener('click', e => {
+            if (e.target.classList.contains('product__add')) {
+                this.cart.addProduct(e.target);
+            }
+        });
+        // document.querySelector('.search-form').addEventListener('submit', e => {
+        //     e.preventDefault();
+        //     this.filter(document.querySelector('.search-field').value)
+        // })
+    }
+
+}
+
+class ProductItem extends Item {
+    render() {
+        return `<div class="product__element data-id="${this.id}">
+<a href="#"><img class="product__img" src="${this.img}" alt="product-1"></a>
+<div class="product__content"> <a href="#" class="product__name">${this.name}</a>
+<p class="product__price">$ ${this.price} </p>
+</div>
+<a href="#" class="product__add"><img class="product__cart" src="img/index/product/cart.png" alt="">Add
+to
+Cart</a>
+</div>
+`;
+    }
+}
+
+class Cart extends List{
+    constructor(container = ".drop__cart", url = "/getBasket.json"){
+      super(url, container);
+      this.getJson()
+        .then(data => {
+          this.handleData(data.contents);
+        });
+    }
+}
+
+
 const listContext = {
     ProductList: ProductItem,
     Cart: CartItem
-}
+};
+
+let cart = new Cart();
+let products = new ProductList(cart);
+
 
 
 

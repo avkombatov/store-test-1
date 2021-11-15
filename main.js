@@ -98,6 +98,35 @@ class Cart extends List{
           this.handleData(data.contents);
         });
     }
+
+    addProduct(element){
+        this.getJson(`${API}/addToBasket.json`)
+          .then(data => {
+            if(data.result === 1){
+              let productId = +element.dataset['id'];
+              let find = this.allProducts.find(product => product.id_product === productId);
+              if(find){
+                find.quantity++;
+                this._updateCart(find);
+              } else {
+                let product = {
+                  id_product: productId,
+                  price: +element.dataset['price'],
+                  product_name: element.dataset['name'],
+                  quantity: 1
+                };
+                // goods - это своего рода "опорный" массив, отражающий список товаров, которые нужно отрендерить.
+                // При добавлении нового товара, нас интересует только он один.
+                this.goods = [product];
+                // далее вызывая метод render, мы добавим в allProducts только его, тем самым избегая лишнего перерендера.
+                this.render();
+              }
+            } else {
+              alert('Error');
+            }
+          })
+      }
+
 }
 
 

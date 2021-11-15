@@ -104,15 +104,16 @@ class Cart extends List{
           .then(data => {
             if(data.result === 1){
               let productId = +element.dataset['id'];
-              let find = this.allProducts.find(product => product.id_product === productId);
+              let find = this.allProducts.find(product => product.id === productId);
               if(find){
                 find.quantity++;
                 this._updateCart(find);
               } else {
                 let product = {
-                  id_product: productId,
+                  id: productId,
+                  img: element.dataset['img'],
                   price: +element.dataset['price'],
-                  product_name: element.dataset['name'],
+                  name: element.dataset['name'],
                   quantity: 1
                 };
                 // goods - это своего рода "опорный" массив, отражающий список товаров, которые нужно отрендерить.
@@ -127,7 +128,27 @@ class Cart extends List{
           })
       }
 
+      removeProduct(element){
+        this.getJson(`${API}/deleteFromBasket.json`)
+          .then(data => {
+            if(data.result === 1){
+              let productId = +element.dataset['id'];
+              let find = this.allProducts.find(product => product.id_product === productId);
+              if(find.quantity > 1){ // если товара > 1, то уменьшаем количество на 1
+                find.quantity--;
+                this._updateCart(find);
+              } else { // удаляем
+                this.allProducts.splice(this.allProducts.indexOf(find), 1);
+                document.querySelector(`.cart-item[data-id="${productId}"]`).remove();
+              }
+            } else {
+              alert('Error');
+            }
+          })
+      }
+
 }
+
 
 
 const listContext = {

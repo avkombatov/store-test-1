@@ -103,9 +103,9 @@
     &__cart {
         position: relative;
 
-        &:hover .drop__cart {
-            display: block;
-        }
+        // &:hover .drop__cart {
+        //     display: block;
+        // }
     }
 }
 
@@ -129,18 +129,23 @@
         top: 35px;
     }
 
+    &__invisible {
+        display: none;
+    }
+
     &__cart {
         border-radius: 5px;
         width: 262px;
         background-color: #fff;
         padding: 15px;
         border: 1px solid #e8e8e8;
-        display: none;
+        // display: none;
         position: absolute;
         top: 35px;
         left: -20px;
         z-index: 1;
-        &_img{
+
+        &_img {
             width: 72px;
             height: 85px;
         }

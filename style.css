@@ -185,10 +185,6 @@ a {
   position: relative;
 }
 
-.header__cart:hover .drop__cart {
-  display: block;
-}
-
 .drop__browse {
   left: 35px;
   top: 25px;
@@ -207,13 +203,16 @@ a {
   top: 35px;
 }
 
+.drop__invisible {
+  display: none;
+}
+
 .drop__cart {
   border-radius: 5px;
   width: 262px;
   background-color: #fff;
   padding: 15px;
   border: 1px solid #e8e8e8;
-  display: none;
   position: absolute;
   top: 35px;
   left: -20px;
@@ -443,6 +442,7 @@ a {
 .product__add:hover {
   -webkit-box-shadow: 0 0 5px #fff;
           box-shadow: 0 0 5px #fff;
+  cursor: pointer;
 }
 
 .product__cart {

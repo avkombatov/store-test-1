@@ -8,7 +8,7 @@ class List {
         this.goods = [];
         this.allProducts = [];
         this.filtred = []; //отфильтрованные товары
-        // this._init();
+        this._init();
     }
 
     getJson(url) {
@@ -65,6 +65,7 @@ class ProductsList extends List {
         document.querySelector(this.container).addEventListener('click', e => {
             if (e.target.classList.contains('product__add')) {
                 this.cart.addProduct(e.target);
+                console.log(e.target);
             }
         });
         // document.querySelector('.search-form').addEventListener('submit', e => {
@@ -82,16 +83,18 @@ class ProductItem extends Item {
 <div class="product__content"> <a href="#" class="product__name">${this.name}</a>
 <p class="product__price">$ ${this.price} </p>
 </div>
-<a href="#" class="product__add"><img class="product__cart" src="img/index/product/cart.png" alt="">Add
+<div class="product__add" data-id="${this.id}" data-img="${this.img}"
+data-name="${this.name}"
+data-price="${this.price}"><img class="product__cart" src="img/index/product/cart.png" alt="">Add
 to
-Cart</a>
+Cart</div>
 </div>
 `;
     }
 }
 
 class Cart extends List {
-    constructor(container = ".drop__cart", url = "/getBasket.json") {
+    constructor(container = ".drop__cart", url) {
         super(url, container);
         this.getJson()
             .then(data => {
@@ -149,9 +152,20 @@ class Cart extends List {
 
     _updateCart(product) {
         let block = document.querySelector(`.drop__cart_product[data-id="${product.id}"]`);
-        block.querySelector('.product-quantity').textContent = `Количество: ${product.quantity}`;
-        block.querySelector('.product-price').textContent = `${product.quantity * product.price} ₽`;
+        // block.querySelector('.product-quantity').textContent = `Количество: ${product.quantity}`;
+        // block.querySelector('.product-price').textContent = `${product.quantity * product.price} ₽`;
     }
+
+    _init(){
+        document.querySelector('.cart__a').addEventListener('click', () => {
+          document.querySelector(this.container).classList.toggle('drop__invisible');
+        });
+        document.querySelector(this.container).addEventListener('click', e => {
+          if(e.target.classList.contains('del-btn')){
+            this.removeProduct(e.target);
+          }
+        })
+      }
 
 }
 
@@ -159,6 +173,7 @@ class CartItem extends Item {
     constructor(el) {
         super(el);
         this.quantity = el.quantity;
+       
     }
     render() {
         //   return `<div class="cart-item" data-id="${this.id}">

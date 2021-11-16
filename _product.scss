@@ -79,9 +79,11 @@
         align-items: center;
         display: none;
         transition: all 0.3s;
+       
 
         &:hover {
             box-shadow: 0 0 5px #fff;
+             cursor: pointer;
         }
     }
     &__cart {

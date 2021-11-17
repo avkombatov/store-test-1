@@ -61,6 +61,7 @@ class ProductsList extends List {
         this.getJson()
             .then(data => this.handleData(data));
     }
+
     _init() {
         document.querySelector(this.container).addEventListener('click', e => {
             if (e.target.classList.contains('product__add')) {
@@ -161,7 +162,7 @@ class Cart extends List {
           document.querySelector(this.container).classList.toggle('drop__invisible');
         });
         document.querySelector(this.container).addEventListener('click', e => {
-          if(e.target.classList.contains('del-btn')){
+          if(e.target.classList.contains('drop__delete')){
             this.removeProduct(e.target);
           }
         })

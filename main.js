@@ -95,7 +95,7 @@ Cart</div>
 }
 
 class Cart extends List {
-    constructor(container = ".drop__cart", url = "/getBasket.json") {
+    constructor(container = ".drop__cart", url = "") {
         super(url, container);
         this.getJson()
             .then(data => {
@@ -104,6 +104,7 @@ class Cart extends List {
     }
 
     addProduct(element) {
+        console.log(element);
         this.getJson(`${API}/addToBasket.json`)
             .then(data => {
                 if (data.result === 1) {
@@ -133,17 +134,21 @@ class Cart extends List {
     }
 
     removeProduct(element) {
+        console.log(element);
         this.getJson(`${API}/deleteFromBasket.json`)
             .then(data => {
                 if (data.result === 1) {
                     let productId = +element.dataset['id'];
+                    console.log(productId);
                     let find = this.allProducts.find(product => product.id === productId);
                     if (find.quantity > 1) { // если товара > 1, то уменьшаем количество на 1
                         find.quantity--;
                         this._updateCart(find);
                     } else { // удаляем
                         this.allProducts.splice(this.allProducts.indexOf(find), 1);
-                        document.querySelector(`.drop__cart_product[data-id="${productId}"]`).remove();
+                        let a = document.querySelector(`.drop__cart_product[data-id="${productId}"]`);
+                        console.log(a);
+                        a.remove();
                     }
                 } else {
                     alert('Error');
@@ -192,7 +197,7 @@ class CartItem extends Item {
         //       </div>
         //       </div>`
 
-        return `<div class="drop__cart_product data-id="${this.id}">
+        return `<div class="drop__cart_product" data-id="${this.id}">
     <a href="#" class="drop__cart_a"><img class="drop__cart_img"
             src="${this.img}" alt="foto"></a>
     <div class="drop__cart_descr">
@@ -202,7 +207,7 @@ class CartItem extends Item {
         <p class="product-quantity">Количество: ${this.quantity}</p>
          <p class="drop__cart_p product-quantity">${this.quantity*this.price}</p>
     </div>
-    <i class="fas fa-times-circle drop__delete"></i>
+    <i data-id="${this.id}" class="fas fa-times-circle drop__delete"></i>
 </div>`
     }
 }

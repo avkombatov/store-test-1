@@ -95,7 +95,7 @@ Cart</div>
 }
 
 class Cart extends List {
-    constructor(container = ".drop__cart", url) {
+    constructor(container = ".drop__cart", url = "/getBasket.json") {
         super(url, container);
         this.getJson()
             .then(data => {
@@ -153,8 +153,8 @@ class Cart extends List {
 
     _updateCart(product) {
         let block = document.querySelector(`.drop__cart_product[data-id="${product.id}"]`);
-        // block.querySelector('.product-quantity').textContent = `Количество: ${product.quantity}`;
-        // block.querySelector('.product-price').textContent = `${product.quantity * product.price} ₽`;
+        block.querySelector('.product-quantity').textContent = `rjkbxtcndh: ${product.quantity}`;
+        block.querySelector('.product-price').textContent = `${product.quantity * product.price} ₽`;
     }
 
     _init(){
@@ -199,14 +199,14 @@ class CartItem extends Item {
         <a href="" class="drop__cart_h3">
             <h3 class="drop_cart_h3">${this.name}</h3>
         </a>
-      
-        <p class="drop__cart_p">${this.quantity}×${this.price}</p>
+        <p class="product-quantity">Количество: ${this.quantity}</p>
+         <p class="drop__cart_p product-quantity">${this.quantity*this.price}</p>
     </div>
     <i class="fas fa-times-circle drop__delete"></i>
 </div>`
     }
 }
-
+//
 
 
 const listContext = {

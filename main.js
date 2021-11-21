@@ -158,7 +158,7 @@ class Cart extends List {
 
     _updateCart(product) {
         let block = document.querySelector(`.drop__cart_product[data-id="${product.id}"]`);
-        block.querySelector('.product-quantity').textContent = `rjkbxtcndh: ${product.quantity}`;
+        block.querySelector('.product-quantity').textContent = `Количество: ${product.quantity}`;
         block.querySelector('.product-price').textContent = `${product.quantity * product.price} ₽`;
     }
 
@@ -204,8 +204,8 @@ class CartItem extends Item {
         <a href="" class="drop__cart_h3">
             <h3 class="drop_cart_h3">${this.name}</h3>
         </a>
-        <p class="product-quantity">Количество: ${this.quantity}</p>
-         <p class="drop__cart_p product-quantity">${this.quantity*this.price}</p>
+          <p class="product-quantity">Количество: ${this.quantity}</p>
+         <p class="drop__cart_p product-price">${this.quantity*this.price} ₽</p>
     </div>
     <i data-id="${this.id}" class="fas fa-times-circle drop__delete"></i>
 </div>`

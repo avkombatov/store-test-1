@@ -264,3 +264,40 @@
     text-transform: uppercase;
     cursor: pointer;
 }
+
+.drop__cart-total {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 19px;
+    margin-bottom: 32px;
+}
+
+.drop__price,
+.drop__total {
+    font-size: 16px;
+    font-weight: bold;
+    color: #222222;
+    text-transform: uppercase;
+}
+
+.drop__button {
+    height: 50px;
+    width: 230px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 900;
+    color: #4a4a4a;
+    text-transform: uppercase;
+    border: 1px solid #e8e8e8;
+    transition: all 0.3s;
+
+    &:hover {
+        font-size: 14px;
+        font-weight: 900;
+        color: #f16d7f;
+        text-transform: uppercase;
+        border: 1px solid #f16d7f;
+    }
+}

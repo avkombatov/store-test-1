@@ -339,6 +339,54 @@ a {
   cursor: pointer;
 }
 
+.drop__cart-total {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  margin-top: 19px;
+  margin-bottom: 32px;
+}
+
+.drop__price,
+.drop__total {
+  font-size: 16px;
+  font-weight: bold;
+  color: #222222;
+  text-transform: uppercase;
+}
+
+.drop__button {
+  height: 50px;
+  width: 230px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  font-size: 14px;
+  font-weight: 900;
+  color: #4a4a4a;
+  text-transform: uppercase;
+  border: 1px solid #e8e8e8;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+}
+
+.drop__button:hover {
+  font-size: 14px;
+  font-weight: 900;
+  color: #f16d7f;
+  text-transform: uppercase;
+  border: 1px solid #f16d7f;
+}
+
 .product__h2 {
   font-size: 30px;
   font-weight: 900;
@@ -467,5 +515,12 @@ a {
 .product__button:hover {
   -webkit-transform: scale(1.02);
           transform: scale(1.02);
+}
+
+.cart__empty {
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: 500;
 }
 /*# sourceMappingURL=style.css.map */

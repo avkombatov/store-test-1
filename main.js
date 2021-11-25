@@ -1,5 +1,7 @@
 const API = 'https://raw.githubusercontent.com/avkombatov/store-test-1/test-3';
 
+// console.log(isEmpty(a));
+
 class List {
     constructor(url, container, list = listContext) {
         this.container = container;
@@ -9,6 +11,7 @@ class List {
         this.allProducts = [];
         this.filtred = []; //отфильтрованные товары
         this._init();
+       
     }
 
     getJson(url) {
@@ -24,9 +27,8 @@ class List {
         this.render();
     }
 
-    calcSum() {
-        return this.allProducts.reduce((accum, item) => accum = accum + item.price, 0);
-    }
+
+
     render() {
         const block = document.querySelector(this.container);
         for (let product of this.goods) {
@@ -38,7 +40,11 @@ class List {
         }
 
     }
-
+    calcSum() {
+        let p = this.allProducts.reduce((accum, price) => accum = accum + price, 0);
+        document.querySelector('.drop__price').textContent = p;
+        
+    }
 }
 
 class Item {
@@ -67,6 +73,7 @@ class ProductsList extends List {
             if (e.target.classList.contains('product__add')) {
                 this.cart.addProduct(e.target);
                 console.log(e.target);
+               
             }
         });
         // document.querySelector('.search-form').addEventListener('submit', e => {
@@ -95,7 +102,7 @@ Cart</div>
 }
 
 class Cart extends List {
-    constructor(container = ".drop__cart", url = "") {
+    constructor(container = ".drop__cart-top", url = "") {
         super(url, container);
         this.getJson()
             .then(data => {
@@ -114,6 +121,7 @@ class Cart extends List {
                         find.quantity++;
                         this._updateCart(find);
                     } else {
+                        document.querySelector('.cart__empty').style.display = 'none';
                         let product = {
                             id: productId,
                             img: element.dataset['img'],
@@ -139,16 +147,18 @@ class Cart extends List {
             .then(data => {
                 if (data.result === 1) {
                     let productId = +element.dataset['id'];
-                    console.log(productId);
+                    // console.log(productId);
                     let find = this.allProducts.find(product => product.id === productId);
                     if (find.quantity > 1) { // если товара > 1, то уменьшаем количество на 1
                         find.quantity--;
                         this._updateCart(find);
                     } else { // удаляем
                         this.allProducts.splice(this.allProducts.indexOf(find), 1);
-                        let a = document.querySelector(`.drop__cart_product[data-id="${productId}"]`);
-                        console.log(a);
-                        a.remove();
+                        document.querySelector(`.drop__cart_product[data-id="${productId}"]`).remove();
+                        if (Object.keys(this.allProducts).length == 0) {
+                            console.log('пуст');
+                            document.querySelector('.cart__empty').style.display = 'block';
+                        }
                     }
                 } else {
                     alert('Error');
@@ -160,18 +170,21 @@ class Cart extends List {
         let block = document.querySelector(`.drop__cart_product[data-id="${product.id}"]`);
         block.querySelector('.product-quantity').textContent = `Количество: ${product.quantity}`;
         block.querySelector('.product-price').textContent = `${product.quantity * product.price} ₽`;
+      
+
+
     }
 
-    _init(){
+    _init() {
         document.querySelector('.cart__a').addEventListener('click', () => {
-          document.querySelector(this.container).classList.toggle('drop__invisible');
+            document.querySelector('.drop__cart').classList.toggle('drop__invisible');
         });
         document.querySelector(this.container).addEventListener('click', e => {
-          if(e.target.classList.contains('drop__delete')){
-            this.removeProduct(e.target);
-          }
+            if (e.target.classList.contains('drop__delete')) {
+                this.removeProduct(e.target);
+            }
         })
-      }
+    }
 
 }
 
@@ -179,24 +192,10 @@ class CartItem extends Item {
     constructor(el) {
         super(el);
         this.quantity = el.quantity;
-       
+
     }
     render() {
-        //   return `<div class="cart-item" data-id="${this.id}">
-        //           <div class="product-bio">
-        //           <img src="${this.img}" alt="Some image">
-        //           <div class="product-desc">
-        //           <p class="product-title">${this.name}</p>
-        //           <p class="product-quantity">Количество: ${this.quantity}</p>
-        //       <p class="product-single-price">${this.price} за ед.</p>
-        //       </div>
-        //       </div>
-        //       <div class="right-block">
-        //           <p class="product-price">${this.quantity*this.price} ₽</p>
-        //           <button class="del-btn" data-id="${this.id_product}">&times;</button>
-        //       </div>
-        //       </div>`
-
+       
         return `<div class="drop__cart_product" data-id="${this.id}">
     <a href="#" class="drop__cart_a"><img class="drop__cart_img"
             src="${this.img}" alt="foto"></a>

@@ -1,7 +1,5 @@
 const API = 'https://raw.githubusercontent.com/avkombatov/store-test-1/test-3';
 
-// console.log(isEmpty(a));
-
 class List {
     constructor(url, container, list = listContext) {
         this.container = container;
@@ -11,7 +9,7 @@ class List {
         this.allProducts = [];
         this.filtred = []; //отфильтрованные товары
         this._init();
-       
+
     }
 
     getJson(url) {
@@ -43,7 +41,7 @@ class List {
     calcSum() {
         let p = this.allProducts.reduce((accum, price) => accum = accum + price, 0);
         document.querySelector('.drop__price').textContent = p;
-        
+
     }
 }
 
@@ -73,7 +71,7 @@ class ProductsList extends List {
             if (e.target.classList.contains('product__add')) {
                 this.cart.addProduct(e.target);
                 console.log(e.target);
-               
+
             }
         });
         // document.querySelector('.search-form').addEventListener('submit', e => {
@@ -170,7 +168,7 @@ class Cart extends List {
         let block = document.querySelector(`.drop__cart_product[data-id="${product.id}"]`);
         block.querySelector('.product-quantity').textContent = `Количество: ${product.quantity}`;
         block.querySelector('.product-price').textContent = `${product.quantity * product.price} ₽`;
-      
+
 
 
     }
@@ -195,7 +193,7 @@ class CartItem extends Item {
 
     }
     render() {
-       
+
         return `<div class="drop__cart_product" data-id="${this.id}">
     <a href="#" class="drop__cart_a"><img class="drop__cart_img"
             src="${this.img}" alt="foto"></a>
@@ -210,7 +208,7 @@ class CartItem extends Item {
 </div>`
     }
 }
-//
+
 
 
 const listContext = {
@@ -220,6 +218,7 @@ const listContext = {
 
 let cart = new Cart();
 let products = new ProductsList(cart);
+
 
 
 
